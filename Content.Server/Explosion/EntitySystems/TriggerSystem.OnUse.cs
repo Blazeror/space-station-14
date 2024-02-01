@@ -23,7 +23,10 @@ public sealed partial class TriggerSystem
 
     private void OnStuck(EntityUid uid, OnUseTimerTriggerComponent component, EntityStuckEvent args)
     {
-        if (!component.StartOnStick)
+        if (!EntityManager.TryGetComponent(uid, out StartOnStickComponent? onStick))
+            return;
+
+        if (!onStick.StartOnStick)
             return;
 
         HandleTimerTrigger(
@@ -49,6 +52,9 @@ public sealed partial class TriggerSystem
         if (!args.CanInteract || !args.CanAccess || args.Hands == null)
             return;
 
+        if (!EntityManager.TryGetComponent(uid, out StartOnStickComponent? onStick))
+            return;
+
         if (component.UseVerbInstead)
         {
             args.Verbs.Add(new AlternativeVerb()
@@ -66,12 +72,12 @@ public sealed partial class TriggerSystem
             });
         }
 
-        if (component.AllowToggleStartOnStick)
+        if (onStick.AllowToggleStartOnStick)
         {
             args.Verbs.Add(new AlternativeVerb()
             {
                 Text = Loc.GetString("verb-toggle-start-on-stick"),
-                Act = () => ToggleStartOnStick(uid, args.User, component)
+                Act = () => ToggleStartOnStick(uid, args.User, onStick)
             });
         }
 
@@ -152,7 +158,7 @@ public sealed partial class TriggerSystem
         }
     }
 
-    private void ToggleStartOnStick(EntityUid grenade, EntityUid user, OnUseTimerTriggerComponent comp)
+    private void ToggleStartOnStick(EntityUid grenade, EntityUid user, StartOnStickComponent comp)
     {
         if (comp.StartOnStick)
         {

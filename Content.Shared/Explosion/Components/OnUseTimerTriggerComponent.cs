@@ -31,17 +31,6 @@ namespace Content.Shared.Explosion.Components
         [DataField] public bool UseVerbInstead = false;
 
         /// <summary>
-        ///     Should timer be started when it was stuck to another entity.
-        ///     Used for C4 charges and similar behaviour.
-        /// </summary>
-        [DataField] public bool StartOnStick;
-
-        /// <summary>
-        ///     Allows changing the start-on-stick quality.
-        /// </summary>
-        [DataField("canToggleStartOnStick")] public bool AllowToggleStartOnStick;
-
-        /// <summary>
         ///     Whether you can examine the item to see its timer or not.
         /// </summary>
         [DataField] public bool Examinable = true;
